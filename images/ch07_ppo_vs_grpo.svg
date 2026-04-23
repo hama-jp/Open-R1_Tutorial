@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-size="13">
+  <style>
+    .frame { fill: none; stroke: #2b3a55; stroke-width: 1.5; stroke-dasharray: 6,4; rx: 8; }
+    .box { fill: #f4f6fa; stroke: #2b3a55; stroke-width: 1.4; }
+    .box-policy { fill: #e1f3df; stroke: #2f7a32; stroke-width: 1.5; }
+    .box-value { fill: #ffe8d6; stroke: #c2541b; stroke-width: 1.5; }
+    .box-reward { fill: #d8ecff; stroke: #1c5fa8; stroke-width: 1.5; }
+    .box-stat { fill: #fff1d6; stroke: #b8860b; stroke-width: 1.5; }
+    .box-upd { fill: #f0e6ff; stroke: #5a2a98; stroke-width: 1.5; }
+    .arrow { stroke: #2b3a55; stroke-width: 1.4; fill: none; marker-end: url(#arr); }
+    .label { fill: #2b3a55; }
+    .small { font-size: 11px; fill: #4a5575; }
+    .formula { font-style: italic; fill: #1a1a1a; }
+    .title { font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+    .subtitle { font-size: 14px; font-weight: bold; fill: #1a1a1a; }
+    .diff { fill: #c2181c; font-weight: bold; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b3a55"/>
+    </marker>
+  </defs>
+
+  <text x="440" y="26" text-anchor="middle" class="title">PPO と GRPO：同じ骨格、異なるベースライン推定器</text>
+
+  <!-- Left: PPO -->
+  <rect class="frame" x="30" y="50" width="380" height="400"/>
+  <text x="220" y="75" text-anchor="middle" class="subtitle">PPO</text>
+
+  <rect class="box" x="70" y="100" width="120" height="44" rx="6"/>
+  <text x="130" y="127" text-anchor="middle" class="label">プロンプト x</text>
+
+  <rect class="box-policy" x="70" y="170" width="120" height="44" rx="6"/>
+  <text x="130" y="197" text-anchor="middle" class="label">方策 π_θ</text>
+
+  <rect class="box" x="70" y="240" width="120" height="44" rx="6"/>
+  <text x="130" y="267" text-anchor="middle" class="label">応答 y (1 個)</text>
+
+  <rect class="box-reward" x="70" y="310" width="120" height="44" rx="6"/>
+  <text x="130" y="337" text-anchor="middle" class="label">報酬 r</text>
+
+  <!-- Value network highlighted as diff -->
+  <rect class="box-value" x="230" y="170" width="140" height="70" rx="6"/>
+  <text x="300" y="195" text-anchor="middle" class="label" font-weight="bold">価値ネット V_ψ(s)</text>
+  <text x="300" y="214" text-anchor="middle" class="small">LLM サイズ</text>
+  <text x="300" y="230" text-anchor="middle" class="diff">◆ GRPO には無い</text>
+
+  <rect class="box-upd" x="230" y="310" width="140" height="80" rx="6"/>
+  <text x="300" y="333" text-anchor="middle" class="label" font-weight="bold">アドバンテージ</text>
+  <text x="300" y="353" text-anchor="middle" class="formula">A = r + γV(s') − V(s)</text>
+  <text x="300" y="372" text-anchor="middle" class="small">（GAE で時刻方向に和）</text>
+
+  <path class="arrow" d="M130,144 L130,170"/>
+  <path class="arrow" d="M130,214 L130,240"/>
+  <path class="arrow" d="M130,284 L130,310"/>
+  <path class="arrow" d="M190,260 L230,205"/>
+  <path class="arrow" d="M190,332 L230,350"/>
+  <path class="arrow" d="M300,240 L300,310"/>
+
+  <rect class="box-policy" x="145" y="405" width="170" height="36" rx="6"/>
+  <text x="230" y="428" text-anchor="middle" class="label">方策更新（clip + KL）</text>
+  <path class="arrow" d="M300,390 L275,405"/>
+  <path class="arrow" d="M130,354 L210,405"/>
+
+  <!-- Right: GRPO -->
+  <rect class="frame" x="470" y="50" width="380" height="400"/>
+  <text x="660" y="75" text-anchor="middle" class="subtitle">GRPO</text>
+
+  <rect class="box" x="510" y="100" width="120" height="44" rx="6"/>
+  <text x="570" y="127" text-anchor="middle" class="label">プロンプト x</text>
+
+  <rect class="box-policy" x="510" y="170" width="120" height="44" rx="6"/>
+  <text x="570" y="197" text-anchor="middle" class="label">方策 π_θ</text>
+
+  <!-- G responses (stacked) -->
+  <g>
+    <rect class="box" x="510" y="240" width="120" height="30" rx="6"/>
+    <rect class="box" x="515" y="247" width="120" height="30" rx="6"/>
+    <rect class="box" x="520" y="254" width="120" height="30" rx="6"/>
+    <rect class="box" x="525" y="261" width="120" height="30" rx="6"/>
+    <text x="585" y="280" text-anchor="middle" class="label">応答 y^1 … y^G</text>
+  </g>
+
+  <rect class="box-reward" x="510" y="320" width="120" height="44" rx="6"/>
+  <text x="570" y="347" text-anchor="middle" class="label">報酬 r^1 … r^G</text>
+
+  <!-- Group statistics highlighted as diff -->
+  <rect class="box-stat" x="670" y="240" width="160" height="80" rx="6"/>
+  <text x="750" y="265" text-anchor="middle" class="label" font-weight="bold">グループ統計</text>
+  <text x="750" y="284" text-anchor="middle" class="small">μ = mean(r), σ = std(r)</text>
+  <text x="750" y="308" text-anchor="middle" class="diff">◆ 価値ネットの代役</text>
+
+  <rect class="box-upd" x="670" y="340" width="160" height="58" rx="6"/>
+  <text x="750" y="362" text-anchor="middle" class="label" font-weight="bold">アドバンテージ</text>
+  <text x="750" y="382" text-anchor="middle" class="formula">A^i = (r^i − μ) / σ</text>
+
+  <path class="arrow" d="M570,144 L570,170"/>
+  <path class="arrow" d="M570,214 L570,240"/>
+  <path class="arrow" d="M590,290 L590,320"/>
+  <path class="arrow" d="M630,340 L670,290"/>
+  <path class="arrow" d="M750,320 L750,340"/>
+
+  <rect class="box-policy" x="585" y="415" width="170" height="36" rx="6"/>
+  <text x="670" y="438" text-anchor="middle" class="label">方策更新（clip + KL）</text>
+  <path class="arrow" d="M750,398 L720,415"/>
+  <path class="arrow" d="M570,364 L650,415"/>
+
+  <!-- Bottom caption -->
+  <text x="440" y="475" text-anchor="middle" class="small">図7-1: ベースラインを引く骨格は両者共通。PPO は「学習パラメータの価値関数」で見積もり、GRPO は「同一プロンプトからの G サンプルの統計」で見積もる。</text>
+</svg>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 460" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-size="13">
+  <style>
+    .box { fill: #f4f6fa; stroke: #2b3a55; stroke-width: 1.5; }
+    .box-q { fill: #ffe8d6; stroke: #c2541b; stroke-width: 1.5; }
+    .box-k { fill: #d8ecff; stroke: #1c5fa8; stroke-width: 1.5; }
+    .box-v { fill: #e1f3df; stroke: #2f7a32; stroke-width: 1.5; }
+    .box-out { fill: #f0e6ff; stroke: #5a2a98; stroke-width: 1.5; }
+    .arrow { stroke: #2b3a55; stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .label { fill: #2b3a55; }
+    .small { font-size: 11px; fill: #4a5575; }
+    .formula { font-style: italic; fill: #1a1a1a; }
+    .title { font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b3a55"/>
+    </marker>
+  </defs>
+
+  <text x="380" y="26" text-anchor="middle" class="title">Self-Attention の流れ（1ヘッド・系列長 T = 4）</text>
+
+  <!-- Input X -->
+  <rect class="box" x="30" y="60" width="120" height="80" rx="6"/>
+  <text x="90" y="90" text-anchor="middle" class="label">入力 X</text>
+  <text x="90" y="110" text-anchor="middle" class="small">形状: (T, d_model)</text>
+  <text x="90" y="128" text-anchor="middle" class="small">トークン埋め込み</text>
+
+  <!-- Three projections -->
+  <rect class="box-q" x="200" y="30" width="120" height="50" rx="6"/>
+  <text x="260" y="50" text-anchor="middle" class="label">Q = X W_Q</text>
+  <text x="260" y="68" text-anchor="middle" class="small">(T, d_k)</text>
+
+  <rect class="box-k" x="200" y="100" width="120" height="50" rx="6"/>
+  <text x="260" y="120" text-anchor="middle" class="label">K = X W_K</text>
+  <text x="260" y="138" text-anchor="middle" class="small">(T, d_k)</text>
+
+  <rect class="box-v" x="200" y="170" width="120" height="50" rx="6"/>
+  <text x="260" y="190" text-anchor="middle" class="label">V = X W_V</text>
+  <text x="260" y="208" text-anchor="middle" class="small">(T, d_v)</text>
+
+  <path class="arrow" d="M150,90 L200,55"/>
+  <path class="arrow" d="M150,100 L200,125"/>
+  <path class="arrow" d="M150,115 L200,195"/>
+
+  <!-- Score matrix -->
+  <rect class="box" x="380" y="30" width="150" height="120" rx="6"/>
+  <text x="455" y="55" text-anchor="middle" class="label">スコア行列</text>
+  <text x="455" y="74" text-anchor="middle" class="formula">S = Q K&#8868; / &#8730;d_k</text>
+  <!-- mini matrix -->
+  <g transform="translate(395,82)">
+    <rect x="0" y="0" width="22" height="14" fill="#ffd6a5"/>
+    <rect x="22" y="0" width="22" height="14" fill="#fdfcdc"/>
+    <rect x="44" y="0" width="22" height="14" fill="#fdfcdc"/>
+    <rect x="66" y="0" width="22" height="14" fill="#fdfcdc"/>
+    <rect x="0" y="14" width="22" height="14" fill="#ffb088"/>
+    <rect x="22" y="14" width="22" height="14" fill="#ffd6a5"/>
+    <rect x="44" y="14" width="22" height="14" fill="#fdfcdc"/>
+    <rect x="66" y="14" width="22" height="14" fill="#fdfcdc"/>
+    <rect x="0" y="28" width="22" height="14" fill="#ff8866"/>
+    <rect x="22" y="28" width="22" height="14" fill="#ffb088"/>
+    <rect x="44" y="28" width="22" height="14" fill="#ffd6a5"/>
+    <rect x="66" y="28" width="22" height="14" fill="#fdfcdc"/>
+    <rect x="0" y="42" width="22" height="14" fill="#ff5544"/>
+    <rect x="22" y="42" width="22" height="14" fill="#ff8866"/>
+    <rect x="44" y="42" width="22" height="14" fill="#ffb088"/>
+    <rect x="66" y="42" width="22" height="14" fill="#ffd6a5"/>
+    <rect x="0" y="0" width="88" height="56" fill="none" stroke="#2b3a55" stroke-width="0.8"/>
+  </g>
+  <text x="455" y="148" text-anchor="middle" class="small">(T, T) 因果マスク後</text>
+
+  <path class="arrow" d="M320,55 L380,80"/>
+  <path class="arrow" d="M320,125 L380,100"/>
+
+  <!-- Softmax + weights -->
+  <rect class="box" x="580" y="30" width="150" height="120" rx="6"/>
+  <text x="655" y="55" text-anchor="middle" class="label">Attention 重み</text>
+  <text x="655" y="74" text-anchor="middle" class="formula">W = softmax(S)</text>
+  <text x="655" y="92" text-anchor="middle" class="small">行ごとに合計 1.0</text>
+  <text x="655" y="118" text-anchor="middle" class="small">「どのトークンを</text>
+  <text x="655" y="134" text-anchor="middle" class="small">どれだけ見るか」</text>
+
+  <path class="arrow" d="M530,90 L580,90"/>
+
+  <!-- Weighted sum with V -->
+  <rect class="box-out" x="380" y="270" width="150" height="80" rx="6"/>
+  <text x="455" y="298" text-anchor="middle" class="label">出力 Y</text>
+  <text x="455" y="318" text-anchor="middle" class="formula">Y = W V</text>
+  <text x="455" y="338" text-anchor="middle" class="small">(T, d_v)</text>
+
+  <path class="arrow" d="M655,150 L530,270"/>
+  <path class="arrow" d="M260,220 L380,290"/>
+
+  <!-- Bottom annotations -->
+  <g transform="translate(40,280)">
+    <text x="0" y="0" class="label" font-weight="bold">直感:</text>
+    <text x="0" y="22" class="label">Q = 「自分が今 何を探しているか」</text>
+    <text x="0" y="44" class="label">K = 「他のトークンが 何の見出しを持つか」</text>
+    <text x="0" y="66" class="label">V = 「他のトークンが 何の中身を持つか」</text>
+    <text x="0" y="92" class="small">→ Q と K の内積で「関連度」を測り、</text>
+    <text x="0" y="108" class="small">　その重みで V を平均する</text>
+  </g>
+
+  <g transform="translate(560,280)">
+    <text x="0" y="0" class="label" font-weight="bold">マスク（自己回帰）:</text>
+    <text x="0" y="22" class="small">未来トークンの位置は</text>
+    <text x="0" y="38" class="small">−∞ にして softmax 後に 0</text>
+    <text x="0" y="60" class="label" font-weight="bold">マルチヘッド:</text>
+    <text x="0" y="82" class="small">d_model を H 分割して</text>
+    <text x="0" y="98" class="small">この計算を H 回並行</text>
+  </g>
+
+  <text x="380" y="440" text-anchor="middle" class="small">図2-1: 1 ブロック・1 ヘッド分の Self-Attention 計算。マルチヘッドはこの構造を H 個並行に走らせる。</text>
+</svg>

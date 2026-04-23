@@ -106,6 +106,24 @@ Open-R1_Tutorial/
 └── images/             # 図版
 ```
 
+## 🖼️ 図版
+
+主要な概念には SVG の図版を用意しています（`images/`）。
+
+| 図 | 内容 | 章 |
+|---|---|---|
+| `ch02_attention.svg` | Self-Attention の Q/K/V → スコア → softmax → 加重和 | 第2章 |
+| `ch03_moe_routing.svg` | MoE のルーティング（E=8 のうち top-K=2 だけ活性化） | 第3章 |
+| `ch04_rope_rotation.svg` | RoPE の 2 次元回転と相対位置への帰着 | 第4章 |
+| `ch07_ppo_vs_grpo.svg` | PPO と GRPO の構造比較（違いはベースライン推定器のみ） | 第7章 |
+| `ch08_training_curves.svg` | reward と completion_length の同期した伸び | 第8章 |
+
+## 🚀 Google Colab で試す
+
+GPU が手元に無くても、第11章 11.0 節の **Colab クイックスタート** に従えば
+無料 T4 で **推論 → ミニ SFT** まで完走できます。第12章の Countdown フル実験は
+Colab Pro / 自前 GPU を推奨。
+
 ## 💻 動作環境
 
 本書のコード例は以下で動作確認しています。
