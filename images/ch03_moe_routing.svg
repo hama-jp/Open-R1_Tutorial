@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-size="13">
+  <style>
+    .box { fill: #f4f6fa; stroke: #2b3a55; stroke-width: 1.5; }
+    .router { fill: #fff1d6; stroke: #b8860b; stroke-width: 1.5; }
+    .expert-on { fill: #d8f0d4; stroke: #2f7a32; stroke-width: 2; }
+    .expert-off { fill: #f0f0f0; stroke: #888; stroke-width: 1; stroke-dasharray: 3,3; }
+    .combine { fill: #e1d9ff; stroke: #5a2a98; stroke-width: 1.5; }
+    .arrow { stroke: #2b3a55; stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .arrow-off { stroke: #888; stroke-width: 1; fill: none; stroke-dasharray: 3,3; }
+    .label { fill: #2b3a55; }
+    .small { font-size: 11px; fill: #4a5575; }
+    .off-text { fill: #888; }
+    .title { font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b3a55"/>
+    </marker>
+  </defs>
+
+  <text x="380" y="26" text-anchor="middle" class="title">Mixture of Experts: 1 トークンの通り道（E=8, top-K=2）</text>
+
+  <!-- Input token -->
+  <rect class="box" x="30" y="180" width="110" height="56" rx="6"/>
+  <text x="85" y="205" text-anchor="middle" class="label">トークン x_t</text>
+  <text x="85" y="224" text-anchor="middle" class="small">(d_model,)</text>
+
+  <!-- Router -->
+  <rect class="router" x="180" y="170" width="130" height="76" rx="6"/>
+  <text x="245" y="192" text-anchor="middle" class="label" font-weight="bold">ルータ</text>
+  <text x="245" y="212" text-anchor="middle" class="small">g = softmax(x W_g)</text>
+  <text x="245" y="230" text-anchor="middle" class="small">top-K で 2 個選ぶ</text>
+
+  <path class="arrow" d="M140,208 L180,208"/>
+
+  <!-- 8 experts -->
+  <g transform="translate(360,60)">
+    <!-- E1 off -->
+    <rect class="expert-off" x="0" y="0" width="100" height="32" rx="4"/>
+    <text x="50" y="20" text-anchor="middle" class="off-text small">E1 (使わない)</text>
+    <!-- E2 ON -->
+    <rect class="expert-on" x="0" y="40" width="100" height="32" rx="4"/>
+    <text x="50" y="60" text-anchor="middle" class="label" font-weight="bold">E2  g=0.62</text>
+    <!-- E3 off -->
+    <rect class="expert-off" x="0" y="80" width="100" height="32" rx="4"/>
+    <text x="50" y="100" text-anchor="middle" class="off-text small">E3</text>
+    <!-- E4 off -->
+    <rect class="expert-off" x="0" y="120" width="100" height="32" rx="4"/>
+    <text x="50" y="140" text-anchor="middle" class="off-text small">E4</text>
+    <!-- E5 off -->
+    <rect class="expert-off" x="0" y="160" width="100" height="32" rx="4"/>
+    <text x="50" y="180" text-anchor="middle" class="off-text small">E5</text>
+    <!-- E6 ON -->
+    <rect class="expert-on" x="0" y="200" width="100" height="32" rx="4"/>
+    <text x="50" y="220" text-anchor="middle" class="label" font-weight="bold">E6  g=0.38</text>
+    <!-- E7 off -->
+    <rect class="expert-off" x="0" y="240" width="100" height="32" rx="4"/>
+    <text x="50" y="260" text-anchor="middle" class="off-text small">E7</text>
+    <!-- E8 off -->
+    <rect class="expert-off" x="0" y="280" width="100" height="32" rx="4"/>
+    <text x="50" y="300" text-anchor="middle" class="off-text small">E8</text>
+  </g>
+
+  <!-- Arrows router -> experts -->
+  <path class="arrow-off" d="M310,195 L360,76"/>
+  <path class="arrow"      d="M310,200 L360,116"/>
+  <path class="arrow-off" d="M310,205 L360,156"/>
+  <path class="arrow-off" d="M310,210 L360,196"/>
+  <path class="arrow-off" d="M310,215 L360,236"/>
+  <path class="arrow"      d="M310,220 L360,276"/>
+  <path class="arrow-off" d="M310,225 L360,316"/>
+  <path class="arrow-off" d="M310,230 L360,356"/>
+
+  <!-- Combine -->
+  <rect class="combine" x="540" y="160" width="150" height="90" rx="6"/>
+  <text x="615" y="185" text-anchor="middle" class="label" font-weight="bold">重み付き和</text>
+  <text x="615" y="206" text-anchor="middle" class="small">y = 0.62·E2(x)</text>
+  <text x="615" y="222" text-anchor="middle" class="small">   + 0.38·E6(x)</text>
+  <text x="615" y="242" text-anchor="middle" class="small">(d_model,)</text>
+
+  <!-- Selected experts -> combine -->
+  <path class="arrow" d="M460,116 L540,185"/>
+  <path class="arrow" d="M460,276 L540,225"/>
+
+  <!-- Annotations -->
+  <g transform="translate(30,310)">
+    <text x="0" y="0" class="label" font-weight="bold">DeepSeek-V3 の規模感:</text>
+    <text x="0" y="22" class="small">総パラメータ 671B / 実際に動く（active）37B</text>
+    <text x="0" y="40" class="small">8 段のうち 1 段あたり 256 専門家 + 1 共有専門家</text>
+    <text x="0" y="58" class="small">各トークンが top-8 を選んで通過</text>
+  </g>
+
+  <g transform="translate(540,310)">
+    <text x="0" y="0" class="label" font-weight="bold">負荷分散の課題:</text>
+    <text x="0" y="22" class="small">選ばれる専門家が偏ると</text>
+    <text x="0" y="40" class="small">一部 GPU が遊ぶ → aux loss で均す</text>
+    <text x="0" y="58" class="small">（バイアス補正・DeepSeek-V3 論文 §2.2.2）</text>
+  </g>
+
+  <text x="380" y="400" text-anchor="middle" class="small">図3-1: MoE のルーティング。ルータが各トークンを数個の専門家にだけ通すため、総パラメータは巨大でも計算量は小さい。</text>
+</svg>
