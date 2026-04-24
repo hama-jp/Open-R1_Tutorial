@@ -79,4 +79,4 @@
 
 ---
 
-[← 第12章 実践GRPO](ch12.md) ｜ [トップに戻る](../README.md)
+[← 第12章 実践GRPO](ch12.md) ｜ [→ 付録B 用語集](glossary.md) ｜ [トップに戻る](../README.md)

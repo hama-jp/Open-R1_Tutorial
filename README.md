@@ -89,6 +89,7 @@ Python・機械学習の基礎（`torch` を少し触ったことがある）を
 ### 付録
 
 - [付録A: 参考文献とさらなる学習資源](book/appendix.md)
+- [付録B: 用語集](book/glossary.md)
 - [演習解答集](solutions/README.md)
 
 ## 🗂️ ディレクトリ構成
@@ -98,7 +99,8 @@ Open-R1_Tutorial/
 ├── README.md           # この文書
 ├── book/               # 本文（章ごとにMarkdown）
 │   ├── ch00.md ～ ch12.md
-│   └── appendix.md
+│   ├── appendix.md
+│   └── glossary.md
 ├── examples/           # 動かして試すコード
 │   └── chNN/           # 章番号ごと
 ├── solutions/          # 演習解答
